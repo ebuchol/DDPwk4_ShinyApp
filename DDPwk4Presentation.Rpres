@@ -1,0 +1,69 @@
+Application for Predicting Weekly Gas Consumption Savings from Using Cavity Wall Insulation
+========================================================
+author: Eric W Bucholz
+date: September 20, 2018
+autosize: true
+transition: rotate
+transition-speed: default
+width: 1400
+height: 800
+
+Introduction
+========================================================
+
+The use of insulation in homes has significant impact on the amount of heat loss during cold seasons.  
+
+In this app, the *whiteside* dataset from the *MASS* package is utilized. In the data, Derek Whiteside of the UK Building Research Station recorded the weekly gas consumption at his home in the 1960s along with the average external temperature before and after installation of cavity wall insulation.  
+
+From the data, this app generates linear models to predict gas consumption both with and without insulation. These models allow users to select from a wide range of temperatures and investigate how much of an impact cavity wall insulation has on weekly gas consumption.  
+
+Summary of Dataset
+========================================================
+
+```{r slide3, echo = FALSE, eval = TRUE, message = FALSE, warning = FALSE}
+library(MASS)
+library(ggplot2)
+data(whiteside)
+ws <- whiteside
+ws$Insul <- factor(ws$Insul, labels = c("Without Insulation", "With Insulation"))
+names(ws) <- c("Insulation.Type", "Temperature", "Gas.Consumption")
+summary(ws)
+```
+
+- The data summary shows that Mr. Whiteside collected 30 and 26 weekly gas consumption/temperature data points with and without insulation, respectively
+- In the data, the units for temperature is Celsius and gas consumption is 1000s of cubic feet
+- The dataset spans temperatures from -0.8 to 10.2 degrees Celsius and gas consumptions from 1300 to 7200 cubic feet
+- From the fitted linear models, this app allows users to investigate temperatures from -20 to 65 degrees in either Celsius or Fahrehneit
+
+
+Visualization of Dataset
+=======================================================
+
+```{r slide4, echo = FALSE, eval = TRUE}
+ggplot(data = ws, aes(x = Temperature, y = Gas.Consumption, color = Insulation.Type)) +
+    geom_point() + geom_smooth(method = "lm") +
+    labs(x = "Temperature (degrees Celsius)",
+         y = "Gas Consumption (1000 cubic feet)") +
+    theme(axis.text = element_text(size = 12),
+          axis.title = element_text(size = 13),
+          legend.text = element_text(size = 12),
+          legend.title = element_text(size = 13))
+```
+
+***
+
+- The plot on the left illustrates Mr. Whiteside's data being used in this app
+- The reduced weekly gas consumption is clearly seen when cavity wall insulation is used compared to the data without insulation
+- Increased gas consumption at colder temperatures is also evident
+- This app allows the user to specify their own desired external temperature in order to quantify the expected weekly gas consumption savings from installing cavity wall insulation
+
+
+Relevant Links
+=======================================================
+
+- Shiny Application: https://ebuchol.shinyapps.io/ddpwk4project/  
+- GitHub repository: https://github.com/ebuchol/DDPwk4_ShinyApp  
+- ui.R file: https://github.com/ebuchol/DDPwk4_ShinyApp/blob/master/ui.R
+- server.R file: https://github.com/ebuchol/DDPwk4_ShinyApp/blob/master/server.R  
+
+***Note:*** Documentation on how to use this app is available within the user interface of the Shiny Application.  
